@@ -1,0 +1,1885 @@
+{
+  "info": {
+    "name": "DSY2205 S2 - Sistema de Foros en Línea",
+    "description": "Pruebas de ms-usuarios (8081), ms-foro (8082) y ms-moderacion (8083). Ejecutar sql/script_foro.sql antes para tener los datos iniciales.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "urlUsuarios",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "urlForo",
+      "value": "http://localhost:8082"
+    },
+    {
+      "key": "urlModeracion",
+      "value": "http://localhost:8083"
+    },
+    {
+      "key": "idRolNuevo",
+      "value": ""
+    },
+    {
+      "key": "idUsuarioNuevo",
+      "value": ""
+    },
+    {
+      "key": "idCategoriaNueva",
+      "value": ""
+    },
+    {
+      "key": "idTemaNuevo",
+      "value": ""
+    },
+    {
+      "key": "idComentarioNuevo",
+      "value": ""
+    },
+    {
+      "key": "idNormaNueva",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1. ms-usuarios",
+      "item": [
+        {
+          "name": "Roles",
+          "item": [
+            {
+              "name": "Listar roles",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/roles",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Obtener rol por ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/roles/1",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "1"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Crear rol",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/roles",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"VISITANTE\",\n  \"descripcion\": \"Solo puede leer temas\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.collectionVariables.set(\"idRolNuevo\", pm.response.json().id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Actualizar rol",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/roles/{{idRolNuevo}}",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "{{idRolNuevo}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"VISITANTE\",\n  \"descripcion\": \"Solo lectura, sin publicar ni comentar\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Eliminar rol",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/roles/{{idRolNuevo}}",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "{{idRolNuevo}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Eliminar rol con usuarios (409)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/roles/3",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "3"
+                  ]
+                },
+                "description": "No se puede eliminar un rol que tiene usuarios asignados."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Usuarios",
+          "item": [
+            {
+              "name": "Listar usuarios",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/usuarios",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Obtener usuario por ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/usuarios/3",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "3"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Crear usuario",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/usuarios",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombreUsuario\": \"fran_cine\",\n  \"email\": \"francisca.mora@foroduoc.cl\",\n  \"password\": \"Usuario2026\",\n  \"nombreCompleto\": \"Francisca Mora\",\n  \"idRol\": 3\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.collectionVariables.set(\"idUsuarioNuevo\", pm.response.json().id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Crear usuario repetido (409)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/usuarios",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombreUsuario\": \"fran_cine\",\n  \"email\": \"otro@foroduoc.cl\",\n  \"password\": \"Usuario2026\",\n  \"nombreCompleto\": \"Copia\",\n  \"idRol\": 3\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Crear usuario inválido (400)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/usuarios",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombreUsuario\": \"x\",\n  \"email\": \"no-es-email\",\n  \"nombreCompleto\": \"\",\n  \"idRol\": 3\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Actualizar usuario",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/usuarios/{{idUsuarioNuevo}}",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "{{idUsuarioNuevo}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombreUsuario\": \"fran_cine\",\n  \"email\": \"francisca.mora@foroduoc.cl\",\n  \"nombreCompleto\": \"Francisca Mora Díaz\",\n  \"idRol\": 3,\n  \"activo\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Eliminar usuario",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/usuarios/{{idUsuarioNuevo}}",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "{{idUsuarioNuevo}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Usuarios por rol",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/usuarios/rol/USUARIO",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "rol",
+                    "USUARIO"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Usuarios activos",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/usuarios/estado/true",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "estado",
+                    "true"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar usuarios por texto",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/usuarios/buscar?texto=camila",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "buscar"
+                  ],
+                  "query": [
+                    {
+                      "key": "texto",
+                      "value": "camila"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cantidad de usuarios por rol",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/usuarios/resumen-roles",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "resumen-roles"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Inicio de sesión",
+          "item": [
+            {
+              "name": "Login correcto (USUARIO)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/auth/login",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"usuario\": \"juanito_dev\",\n  \"password\": \"Usuario2026\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Login correcto con email (ADMIN)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/auth/login",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"usuario\": \"admin@foroduoc.cl\",\n  \"password\": \"Admin2026\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Login con contraseña incorrecta (401)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlUsuarios}}/api/auth/login",
+                  "host": [
+                    "{{urlUsuarios}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"usuario\": \"juanito_dev\",\n  \"password\": \"otra\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. ms-foro",
+      "item": [
+        {
+          "name": "Categorías",
+          "item": [
+            {
+              "name": "Listar categorías",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/categorias",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Obtener categoría por ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/categorias/1",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias",
+                    "1"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Crear categoría",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlForo}}/api/categorias",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Libros\",\n  \"descripcion\": \"Lecturas y recomendaciones\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.collectionVariables.set(\"idCategoriaNueva\", pm.response.json().id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Actualizar categoría",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlForo}}/api/categorias/{{idCategoriaNueva}}",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias",
+                    "{{idCategoriaNueva}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Libros y cómics\",\n  \"descripcion\": \"Lecturas, cómics y recomendaciones\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Eliminar categoría",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/categorias/{{idCategoriaNueva}}",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias",
+                    "{{idCategoriaNueva}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Eliminar categoría con temas (409)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/categorias/1",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias",
+                    "1"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Temas activos por categoría (resumen)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/categorias/resumen",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias",
+                    "resumen"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Temas",
+          "item": [
+            {
+              "name": "Listar temas activos",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Ver tema con comentarios (suma visita)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/1",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "1"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Ver tema baneado (403)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/5",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "5"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Publicar tema",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"¿Vale la pena el teclado mecánico?\",\n  \"contenido\": \"Estoy pensando en comprar uno para programar. ¿Se nota la diferencia?\",\n  \"idCategoria\": 1,\n  \"idUsuario\": 3\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "ms-foro consulta a ms-usuarios que el usuario exista y esté activo."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.collectionVariables.set(\"idTemaNuevo\", pm.response.json().id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Publicar con usuario inexistente (400)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Tema de prueba\",\n  \"contenido\": \"Prueba\",\n  \"idCategoria\": 1,\n  \"idUsuario\": 99\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Editar tema (autor)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/{{idTemaNuevo}}",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "{{idTemaNuevo}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"¿Vale la pena un teclado mecánico para programar?\",\n  \"contenido\": \"Estoy pensando en comprar uno. ¿Se nota la diferencia al escribir código?\",\n  \"idCategoria\": 1,\n  \"idUsuario\": 3\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Editar tema de otro usuario (403)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/{{idTemaNuevo}}",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "{{idTemaNuevo}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Cambiado por otro\",\n  \"contenido\": \"No soy el autor\",\n  \"idCategoria\": 1,\n  \"idUsuario\": 4\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Buscar temas por texto",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/buscar?texto=java",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "buscar"
+                  ],
+                  "query": [
+                    {
+                      "key": "texto",
+                      "value": "java"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Temas por categoría",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/categoria/2",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "categoria",
+                    "2"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Temas de un usuario",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/usuario/4",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "usuario",
+                    "4"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Temas más populares",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/populares",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "populares"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Temas baneados",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/baneados",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "baneados"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Comentarios",
+          "item": [
+            {
+              "name": "Comentarios de un tema",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/1/comentarios",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "1",
+                    "comentarios"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Comentar tema",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/{{idTemaNuevo}}/comentarios",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "{{idTemaNuevo}}",
+                    "comentarios"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contenido\": \"Sí, sobre todo si escribes muchas horas al día.\",\n  \"idUsuario\": 4\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.collectionVariables.set(\"idComentarioNuevo\", pm.response.json().id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Comentar tema baneado (400)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/5/comentarios",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "5",
+                    "comentarios"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contenido\": \"¿Siguen disponibles?\",\n  \"idUsuario\": 3\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Listar todos los comentarios",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/comentarios",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "comentarios"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Obtener comentario por ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/comentarios/{{idComentarioNuevo}}",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "comentarios",
+                    "{{idComentarioNuevo}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Editar comentario (autor)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlForo}}/api/comentarios/{{idComentarioNuevo}}",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "comentarios",
+                    "{{idComentarioNuevo}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contenido\": \"Sí, sobre todo si programas muchas horas al día.\",\n  \"idUsuario\": 4\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Comentarios de un usuario",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/comentarios/usuario/3",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "comentarios",
+                    "usuario",
+                    "3"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Comentarios baneados",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/comentarios/baneados",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "comentarios",
+                    "baneados"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Eliminar comentario",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/comentarios/{{idComentarioNuevo}}",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "comentarios",
+                    "{{idComentarioNuevo}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Eliminar tema (y sus comentarios)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/{{idTemaNuevo}}",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "{{idTemaNuevo}}"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. ms-moderacion",
+      "item": [
+        {
+          "name": "Normas",
+          "item": [
+            {
+              "name": "Listar normas",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/normas",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "normas"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Obtener norma por ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/normas/2",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "normas",
+                    "2"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Crear norma",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/normas",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "normas"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Sin contenido duplicado\",\n  \"descripcion\": \"No se permite publicar el mismo tema más de una vez.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.collectionVariables.set(\"idNormaNueva\", pm.response.json().id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Actualizar norma",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/normas/{{idNormaNueva}}",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "normas",
+                    "{{idNormaNueva}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Sin contenido duplicado\",\n  \"descripcion\": \"Antes de publicar, usa el buscador para revisar si el tema ya existe.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Eliminar norma",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/normas/{{idNormaNueva}}",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "normas",
+                    "{{idNormaNueva}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Banear y restaurar",
+          "item": [
+            {
+              "name": "USUARIO intenta banear (403)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/temas/4/banear",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "temas",
+                    "4",
+                    "banear"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idModerador\": 3,\n  \"idNorma\": 3,\n  \"motivo\": \"No me gustó la serie\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "MODERADOR banea tema",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/temas/4/banear",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "temas",
+                    "4",
+                    "banear"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idModerador\": 2,\n  \"idNorma\": 3,\n  \"motivo\": \"Tema publicado en la categoría equivocada\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Valida el rol en ms-usuarios y cambia el estado del tema a BANEADO en ms-foro."
+              }
+            },
+            {
+              "name": "Comprobar tema baneado en ms-foro (403)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlForo}}/api/temas/4",
+                  "host": [
+                    "{{urlForo}}"
+                  ],
+                  "path": [
+                    "api",
+                    "temas",
+                    "4"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "MODERADOR intenta restaurar (403)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/temas/4/restaurar",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "temas",
+                    "4",
+                    "restaurar"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idModerador\": 2,\n  \"motivo\": \"Me equivoqué\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "ADMIN restaura tema",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/temas/4/restaurar",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "temas",
+                    "4",
+                    "restaurar"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idModerador\": 1,\n  \"motivo\": \"La categoría es correcta, se restaura\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "MODERADOR banea comentario",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/comentarios/5/banear",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "comentarios",
+                    "5",
+                    "banear"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idModerador\": 2,\n  \"idNorma\": 1,\n  \"motivo\": \"Spoiler sin aviso\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "ADMIN restaura comentario",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/comentarios/5/restaurar",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "comentarios",
+                    "5",
+                    "restaurar"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idModerador\": 1,\n  \"motivo\": \"No es spoiler, se restaura\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Banear sin norma (400)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/temas/2/banear",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "temas",
+                    "2",
+                    "banear"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idModerador\": 1,\n  \"motivo\": \"Sin norma\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Banear tema inexistente (404)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/temas/999/banear",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "temas",
+                    "999",
+                    "banear"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idModerador\": 1,\n  \"idNorma\": 2,\n  \"motivo\": \"Prueba\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Historial y consultas",
+          "item": [
+            {
+              "name": "Listar moderaciones",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Obtener moderación por ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/1",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "1"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Actualizar motivo de moderación",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/1",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "1"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idModerador\": 2,\n  \"idNorma\": 2,\n  \"motivo\": \"Venta de cuentas premium (reportado por 3 usuarios)\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Moderaciones de un moderador",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/moderador/2",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "moderador",
+                    "2"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Moderaciones por tipo",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/tipo/COMENTARIO",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "tipo",
+                    "COMENTARIO"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Historial de un contenido",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/historial/TEMA/4",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "historial",
+                    "TEMA",
+                    "4"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Baneos por norma (resumen)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/resumen-normas",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "resumen-normas"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Eliminar moderación",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{urlModeracion}}/api/moderacion/4",
+                  "host": [
+                    "{{urlModeracion}}"
+                  ],
+                  "path": [
+                    "api",
+                    "moderacion",
+                    "4"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
