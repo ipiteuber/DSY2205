@@ -2,7 +2,7 @@ package com.duoc.foro.controller;
 
 import com.duoc.foro.dto.ComentarioRequest;
 import com.duoc.foro.dto.EstadoRequest;
-import com.duoc.foro.model.Comentario;
+import com.duoc.foro.dto.ComentarioDTO;
 import com.duoc.foro.service.ComentarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,27 +27,27 @@ public class ComentarioController {
     private final ComentarioService comentarioService;
 
     @GetMapping
-    public List<Comentario> listar() {
+    public List<ComentarioDTO> listar() {
         return comentarioService.listar();
     }
 
     @GetMapping("/{id}")
-    public Comentario obtener(@PathVariable Long id) {
+    public ComentarioDTO obtener(@PathVariable Long id) {
         return comentarioService.buscarPorId(id);
     }
 
     @GetMapping("/usuario/{idUsuario}")
-    public List<Comentario> porUsuario(@PathVariable Long idUsuario) {
+    public List<ComentarioDTO> porUsuario(@PathVariable Long idUsuario) {
         return comentarioService.buscarPorUsuario(idUsuario);
     }
 
     @GetMapping("/baneados")
-    public List<Comentario> baneados() {
+    public List<ComentarioDTO> baneados() {
         return comentarioService.listarBaneados();
     }
 
     @PutMapping("/{id}")
-    public Comentario actualizar(@PathVariable Long id, @Valid @RequestBody ComentarioRequest datos) {
+    public ComentarioDTO actualizar(@PathVariable Long id, @Valid @RequestBody ComentarioRequest datos) {
         return comentarioService.actualizar(id, datos);
     }
 
@@ -58,7 +58,7 @@ public class ComentarioController {
     }
 
     @PatchMapping("/{id}/estado")
-    public Comentario cambiarEstado(@PathVariable Long id, @Valid @RequestBody EstadoRequest datos) {
+    public ComentarioDTO cambiarEstado(@PathVariable Long id, @Valid @RequestBody EstadoRequest datos) {
         return comentarioService.cambiarEstado(id, datos.estado());
     }
 }

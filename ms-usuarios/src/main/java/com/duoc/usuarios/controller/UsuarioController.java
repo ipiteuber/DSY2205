@@ -2,7 +2,7 @@ package com.duoc.usuarios.controller;
 
 import com.duoc.usuarios.dto.UsuarioRequest;
 import com.duoc.usuarios.dto.UsuariosPorRol;
-import com.duoc.usuarios.model.Usuario;
+import com.duoc.usuarios.dto.UsuarioDTO;
 import com.duoc.usuarios.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,27 +30,27 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @GetMapping
-    public List<Usuario> listar() {
+    public List<UsuarioDTO> listar() {
         return usuarioService.listar();
     }
 
     @GetMapping("/{id}")
-    public Usuario obtener(@PathVariable Long id) {
+    public UsuarioDTO obtener(@PathVariable Long id) {
         return usuarioService.buscarPorId(id);
     }
 
     @GetMapping("/rol/{nombreRol}")
-    public List<Usuario> porRol(@PathVariable String nombreRol) {
+    public List<UsuarioDTO> porRol(@PathVariable String nombreRol) {
         return usuarioService.buscarPorRol(nombreRol);
     }
 
     @GetMapping("/estado/{activo}")
-    public List<Usuario> porEstado(@PathVariable Boolean activo) {
+    public List<UsuarioDTO> porEstado(@PathVariable Boolean activo) {
         return usuarioService.buscarPorEstado(activo);
     }
 
     @GetMapping("/buscar")
-    public List<Usuario> buscar(@RequestParam String texto) {
+    public List<UsuarioDTO> buscar(@RequestParam String texto) {
         return usuarioService.buscarPorTexto(texto);
     }
 
@@ -60,12 +60,12 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> crear(@Valid @RequestBody UsuarioRequest datos) {
+    public ResponseEntity<UsuarioDTO> crear(@Valid @RequestBody UsuarioRequest datos) {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.crear(datos));
     }
 
     @PutMapping("/{id}")
-    public Usuario actualizar(@PathVariable Long id, @Valid @RequestBody UsuarioRequest datos) {
+    public UsuarioDTO actualizar(@PathVariable Long id, @Valid @RequestBody UsuarioRequest datos) {
         return usuarioService.actualizar(id, datos);
     }
 

@@ -1,7 +1,7 @@
 package com.duoc.foro.controller;
 
 import com.duoc.foro.dto.CategoriaResumen;
-import com.duoc.foro.model.Categoria;
+import com.duoc.foro.dto.CategoriaDTO;
 import com.duoc.foro.service.CategoriaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +28,12 @@ public class CategoriaController {
     private final CategoriaService categoriaService;
 
     @GetMapping
-    public List<Categoria> listar() {
+    public List<CategoriaDTO> listar() {
         return categoriaService.listar();
     }
 
     @GetMapping("/{id}")
-    public Categoria obtener(@PathVariable Long id) {
+    public CategoriaDTO obtener(@PathVariable Long id) {
         return categoriaService.buscarPorId(id);
     }
 
@@ -43,12 +43,12 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> crear(@Valid @RequestBody Categoria categoria) {
+    public ResponseEntity<CategoriaDTO> crear(@Valid @RequestBody CategoriaDTO categoria) {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.crear(categoria));
     }
 
     @PutMapping("/{id}")
-    public Categoria actualizar(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
+    public CategoriaDTO actualizar(@PathVariable Long id, @Valid @RequestBody CategoriaDTO categoria) {
         return categoriaService.actualizar(id, categoria);
     }
 

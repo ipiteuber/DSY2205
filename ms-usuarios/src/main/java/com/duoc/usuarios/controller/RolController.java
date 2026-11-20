@@ -1,6 +1,6 @@
 package com.duoc.usuarios.controller;
 
-import com.duoc.usuarios.model.Rol;
+import com.duoc.usuarios.dto.RolDTO;
 import com.duoc.usuarios.service.RolService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,22 +27,22 @@ public class RolController {
     private final RolService rolService;
 
     @GetMapping
-    public List<Rol> listar() {
+    public List<RolDTO> listar() {
         return rolService.listar();
     }
 
     @GetMapping("/{id}")
-    public Rol obtener(@PathVariable Long id) {
+    public RolDTO obtener(@PathVariable Long id) {
         return rolService.buscarPorId(id);
     }
 
     @PostMapping
-    public ResponseEntity<Rol> crear(@Valid @RequestBody Rol rol) {
+    public ResponseEntity<RolDTO> crear(@Valid @RequestBody RolDTO rol) {
         return ResponseEntity.status(HttpStatus.CREATED).body(rolService.crear(rol));
     }
 
     @PutMapping("/{id}")
-    public Rol actualizar(@PathVariable Long id, @Valid @RequestBody Rol rol) {
+    public RolDTO actualizar(@PathVariable Long id, @Valid @RequestBody RolDTO rol) {
         return rolService.actualizar(id, rol);
     }
 

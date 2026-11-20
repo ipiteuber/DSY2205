@@ -1,53 +1,19 @@
 package com.duoc.usuarios.service;
 
-import com.duoc.usuarios.exception.ConflictoException;
-import com.duoc.usuarios.exception.RecursoNoEncontradoException;
-import com.duoc.usuarios.model.Rol;
-import com.duoc.usuarios.repository.RolRepository;
-import com.duoc.usuarios.repository.UsuarioRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.duoc.usuarios.dto.RolDTO;
 
 import java.util.List;
 
-// Servicio de roles. No deja eliminar un rol que tenga usuarios.
-@Service
-@RequiredArgsConstructor
-public class RolService {
+// Contrato del servicio de roles
+public interface RolService {
 
-    private final RolRepository rolRepository;
-    private final UsuarioRepository usuarioRepository;
+    List<RolDTO> listar();
 
-    public List<Rol> listar() {
-        return rolRepository.findAll();
-    }
+    RolDTO buscarPorId(Long id);
 
-    public Rol buscarPorId(Long id) {
-        return rolRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No existe un rol con ID " + id));
-    }
+    RolDTO crear(RolDTO dto);
 
-    public Rol crear(Rol rol) {
-        if (rolRepository.existsByNombreIgnoreCase(rol.getNombre())) {
-            throw new ConflictoException("Ya existe el rol " + rol.getNombre());
-        }
-        rol.setId(null);
-        rol.setNombre(rol.getNombre().toUpperCase());
-        return rolRepository.save(rol);
-    }
+    RolDTO actualizar(Long id, RolDTO dto);
 
-    public Rol actualizar(Long id, Rol datos) {
-        Rol rol = buscarPorId(id);
-        rol.setNombre(datos.getNombre().toUpperCase());
-        rol.setDescripcion(datos.getDescripcion());
-        return rolRepository.save(rol);
-    }
-
-    public void eliminar(Long id) {
-        Rol rol = buscarPorId(id);
-        if (usuarioRepository.existsByRol_Id(id)) {
-            throw new ConflictoException("No se puede eliminar el rol " + rol.getNombre() + " porque tiene usuarios asignados");
-        }
-        rolRepository.delete(rol);
-    }
+    void eliminar(Long id);
 }

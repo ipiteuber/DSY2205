@@ -2,7 +2,7 @@ package com.duoc.moderacion.controller;
 
 import com.duoc.moderacion.dto.ModeracionRequest;
 import com.duoc.moderacion.dto.ModeracionesPorNorma;
-import com.duoc.moderacion.model.Moderacion;
+import com.duoc.moderacion.dto.ModeracionDTO;
 import com.duoc.moderacion.model.TipoContenido;
 import com.duoc.moderacion.service.ModeracionService;
 import jakarta.validation.Valid;
@@ -30,27 +30,27 @@ public class ModeracionController {
     private final ModeracionService moderacionService;
 
     @GetMapping
-    public List<Moderacion> listar() {
+    public List<ModeracionDTO> listar() {
         return moderacionService.listar();
     }
 
     @GetMapping("/{id}")
-    public Moderacion obtener(@PathVariable Long id) {
+    public ModeracionDTO obtener(@PathVariable Long id) {
         return moderacionService.buscarPorId(id);
     }
 
     @GetMapping("/moderador/{idModerador}")
-    public List<Moderacion> porModerador(@PathVariable Long idModerador) {
+    public List<ModeracionDTO> porModerador(@PathVariable Long idModerador) {
         return moderacionService.buscarPorModerador(idModerador);
     }
 
     @GetMapping("/tipo/{tipo}")
-    public List<Moderacion> porTipo(@PathVariable TipoContenido tipo) {
+    public List<ModeracionDTO> porTipo(@PathVariable TipoContenido tipo) {
         return moderacionService.buscarPorTipo(tipo);
     }
 
     @GetMapping("/historial/{tipo}/{idContenido}")
-    public List<Moderacion> historial(@PathVariable TipoContenido tipo, @PathVariable Long idContenido) {
+    public List<ModeracionDTO> historial(@PathVariable TipoContenido tipo, @PathVariable Long idContenido) {
         return moderacionService.historialDeContenido(tipo, idContenido);
     }
 
@@ -60,27 +60,27 @@ public class ModeracionController {
     }
 
     @PostMapping("/temas/{id}/banear")
-    public ResponseEntity<Moderacion> banearTema(@PathVariable Long id, @Valid @RequestBody ModeracionRequest datos) {
+    public ResponseEntity<ModeracionDTO> banearTema(@PathVariable Long id, @Valid @RequestBody ModeracionRequest datos) {
         return ResponseEntity.status(HttpStatus.CREATED).body(moderacionService.banear(TipoContenido.TEMA, id, datos));
     }
 
     @PostMapping("/temas/{id}/restaurar")
-    public ResponseEntity<Moderacion> restaurarTema(@PathVariable Long id, @Valid @RequestBody ModeracionRequest datos) {
+    public ResponseEntity<ModeracionDTO> restaurarTema(@PathVariable Long id, @Valid @RequestBody ModeracionRequest datos) {
         return ResponseEntity.status(HttpStatus.CREATED).body(moderacionService.restaurar(TipoContenido.TEMA, id, datos));
     }
 
     @PostMapping("/comentarios/{id}/banear")
-    public ResponseEntity<Moderacion> banearComentario(@PathVariable Long id, @Valid @RequestBody ModeracionRequest datos) {
+    public ResponseEntity<ModeracionDTO> banearComentario(@PathVariable Long id, @Valid @RequestBody ModeracionRequest datos) {
         return ResponseEntity.status(HttpStatus.CREATED).body(moderacionService.banear(TipoContenido.COMENTARIO, id, datos));
     }
 
     @PostMapping("/comentarios/{id}/restaurar")
-    public ResponseEntity<Moderacion> restaurarComentario(@PathVariable Long id, @Valid @RequestBody ModeracionRequest datos) {
+    public ResponseEntity<ModeracionDTO> restaurarComentario(@PathVariable Long id, @Valid @RequestBody ModeracionRequest datos) {
         return ResponseEntity.status(HttpStatus.CREATED).body(moderacionService.restaurar(TipoContenido.COMENTARIO, id, datos));
     }
 
     @PutMapping("/{id}")
-    public Moderacion actualizar(@PathVariable Long id, @Valid @RequestBody ModeracionRequest datos) {
+    public ModeracionDTO actualizar(@PathVariable Long id, @Valid @RequestBody ModeracionRequest datos) {
         return moderacionService.actualizar(id, datos);
     }
 
