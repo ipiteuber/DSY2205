@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor
+	xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.1.0 https://maven.apache.org/xsd/archetype-descriptor-1.1.0.xsd"
+	name="arquetipo-microservicio">
+
+	<requiredProperties>
+		<!-- Nombre de la clase principal, queda como <nombreApp>Application -->
+		<requiredProperty key="nombreApp">
+			<defaultValue>Microservicio</defaultValue>
+		</requiredProperty>
+		<!-- Entidad del CRUD, con mayuscula inicial -->
+		<requiredProperty key="entidad">
+			<defaultValue>Recurso</defaultValue>
+		</requiredProperty>
+		<!-- Ruta de la API, queda como /api/<recurso> -->
+		<requiredProperty key="recurso">
+			<defaultValue>recursos</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="tabla">
+			<defaultValue>RECURSOS</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="puerto">
+			<defaultValue>8080</defaultValue>
+		</requiredProperty>
+		<!-- Maven no empaqueta archivos .gitignore, por eso va como __gitignore__ y se renombra al generar -->
+		<requiredProperty key="gitignore">
+			<defaultValue>.gitignore</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="dockerignore">
+			<defaultValue>.dockerignore</defaultValue>
+		</requiredProperty>
+	</requiredProperties>
+
+	<fileSets>
+		<fileSet filtered="true" packaged="true" encoding="UTF-8">
+			<directory>src/main/java</directory>
+			<includes>
+				<include>**/*.java</include>
+			</includes>
+		</fileSet>
+		<fileSet filtered="true" encoding="UTF-8">
+			<directory>src/main/resources</directory>
+			<includes>
+				<include>**/*.properties</include>
+			</includes>
+		</fileSet>
+		<fileSet filtered="true" packaged="true" encoding="UTF-8">
+			<directory>src/test/java</directory>
+			<includes>
+				<include>**/*.java</include>
+			</includes>
+		</fileSet>
+		<fileSet filtered="true" encoding="UTF-8">
+			<directory>src/test/resources</directory>
+			<includes>
+				<include>**/*.properties</include>
+			</includes>
+		</fileSet>
+		<fileSet filtered="true" encoding="UTF-8">
+			<directory>sql</directory>
+			<includes>
+				<include>**/*.sql</include>
+			</includes>
+		</fileSet>
+		<fileSet filtered="true" encoding="UTF-8">
+			<directory></directory>
+			<includes>
+				<include>Dockerfile</include>
+			</includes>
+		</fileSet>
+		<fileSet encoding="UTF-8">
+			<directory>.mvn</directory>
+			<includes>
+				<include>**/*</include>
+			</includes>
+		</fileSet>
+		<fileSet encoding="UTF-8">
+			<directory></directory>
+			<includes>
+				<include>mvnw</include>
+				<include>mvnw.cmd</include>
+				<include>__gitignore__</include>
+				<include>__dockerignore__</include>
+				<include>.gitattributes</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</archetype-descriptor>
