@@ -1,0 +1,53 @@
+<div class="modal d-block" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" [formGroup]="form" (ngSubmit)="confirmar()" novalidate>
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="tituloModal">
+          {{ accion() === 'BANEAR' ? 'Banear' : 'Restaurar' }} {{ tipo() === 'TEMA' ? 'tema' : 'comentario' }}
+        </h2>
+        <button type="button" class="btn-close" aria-label="Cerrar" (click)="cerrar.emit(null)"></button>
+      </div>
+      <div class="modal-body">
+        @if (descripcion()) {
+          <blockquote class="contenido-moderado small mb-3">{{ descripcion() }}</blockquote>
+        }
+        @if (error(); as mensajeError) {
+          <div class="alert alert-danger py-2">{{ mensajeError }}</div>
+        }
+
+        @if (accion() === 'BANEAR') {
+          <div class="mb-3">
+            <label for="idNorma" class="form-label">Norma incumplida <span class="text-danger">*</span></label>
+            <select id="idNorma" class="form-select" formControlName="idNorma"
+              [class.is-invalid]="form.controls.idNorma.invalid && form.controls.idNorma.touched">
+              <option value="" disabled>Selecciona una norma</option>
+              @for (norma of moderacion.normas; track norma.idNorma) {
+                <option [value]="norma.idNorma">{{ norma.titulo }}</option>
+              }
+            </select>
+            <app-error-campo [control]="form.controls.idNorma" [mensajes]="{ required: 'Debes seleccionar la norma que se incumplió.' }" />
+          </div>
+        }
+
+        <div class="mb-1">
+          <label for="motivo" class="form-label">Motivo <span class="text-danger">*</span></label>
+          <textarea id="motivo" rows="3" class="form-control" formControlName="motivo" maxlength="200"
+            [class.is-invalid]="form.controls.motivo.invalid && form.controls.motivo.touched"
+            placeholder="Explica brevemente la decisión"></textarea>
+          <div class="d-flex justify-content-between">
+            <app-error-campo [control]="form.controls.motivo" />
+            <small class="text-body-secondary ms-auto">{{ form.controls.motivo.value.length }}/200</small>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="cerrar.emit(null)">Cancelar</button>
+        <button type="submit" class="btn" [class.btn-danger]="accion() === 'BANEAR'" [class.btn-success]="accion() === 'RESTAURAR'"
+          [disabled]="form.invalid">
+          {{ accion() === 'BANEAR' ? 'Confirmar baneo' : 'Confirmar restauración' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-backdrop fade show"></div>

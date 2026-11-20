@@ -1,0 +1,30 @@
+.tema-principal {
+  border-top: 4px solid var(--color-categoria, var(--fd-primario));
+}
+
+.badge-categoria {
+  background: var(--color-categoria, var(--fd-primario));
+}
+
+.contenido {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.comentario.baneado {
+  background: #fff7f7;
+  border-color: #f1aeb5;
+}
+
+.avatar-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--fd-primario-suave);
+  color: var(--fd-primario);
+  font-weight: 800;
+  font-size: 0.85rem;
+}

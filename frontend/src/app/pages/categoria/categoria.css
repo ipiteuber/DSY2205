@@ -1,0 +1,14 @@
+.cabecera-categoria {
+  background: color-mix(in srgb, var(--color-categoria) 12%, #fff);
+  border-bottom: 4px solid var(--color-categoria);
+}
+
+.imagen-categoria {
+  max-height: 110px;
+}
+
+@media (min-width: 768px) {
+  .w-md-auto {
+    width: auto !important;
+  }
+}

@@ -1,0 +1,95 @@
+<section class="auth-wrapper">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+        <div class="card auth-card">
+          <div class="card-body p-4 p-sm-5">
+            <div class="text-center mb-4">
+              <img src="logo.svg" alt="Logo ForoDuoc" width="56" height="56" class="mb-2">
+              <h1 class="h3 fw-bold mb-1">Registro de usuarios</h1>
+              <p class="text-body-secondary mb-0">Crea tu cuenta para publicar temas y comentar</p>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <label for="nombreCompleto" class="form-label">Nombre completo <span class="text-danger">*</span></label>
+                  <input id="nombreCompleto" type="text" class="form-control" formControlName="nombreCompleto" autocomplete="name" maxlength="100"
+                    [class.is-invalid]="form.controls.nombreCompleto.invalid && form.controls.nombreCompleto.touched"
+                    [class.is-valid]="form.controls.nombreCompleto.valid && form.controls.nombreCompleto.touched">
+                  <app-error-campo [control]="form.controls.nombreCompleto" [mensajes]="mensajesNombre" />
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <label for="nombreUsuario" class="form-label">Nombre de usuario <span class="text-danger">*</span></label>
+                  <div class="input-group has-validation">
+                    <span class="input-group-text">&#64;</span>
+                    <input id="nombreUsuario" type="text" class="form-control" formControlName="nombreUsuario" autocomplete="username" maxlength="20"
+                      [class.is-invalid]="form.controls.nombreUsuario.invalid && form.controls.nombreUsuario.touched"
+                      [class.is-valid]="form.controls.nombreUsuario.valid && form.controls.nombreUsuario.touched">
+                  </div>
+                  <app-error-campo [control]="form.controls.nombreUsuario" [mensajes]="mensajesUsuario" />
+                  <div class="form-text">Entre 4 y 20 caracteres: Letras, números y guion bajo.</div>
+                </div>
+
+                <div class="col-12">
+                  <label for="email" class="form-label">Correo electrónico <span class="text-danger">*</span></label>
+                  <input id="email" type="email" class="form-control" formControlName="email" autocomplete="email" maxlength="100"
+                    [class.is-invalid]="form.controls.email.invalid && form.controls.email.touched"
+                    [class.is-valid]="form.controls.email.valid && form.controls.email.touched"
+                    placeholder="nombre@duocuc.cl">
+                  <app-error-campo [control]="form.controls.email" [mensajes]="mensajesEmail" />
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <label for="password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+                  <div class="input-group has-validation">
+                    <input id="password" [type]="verPassword() ? 'text' : 'password'" class="form-control" formControlName="password"
+                      autocomplete="new-password" [attr.maxlength]="passwordMax"
+                      [class.is-invalid]="form.controls.password.invalid && form.controls.password.touched"
+                      [class.is-valid]="form.controls.password.valid && form.controls.password.touched">
+                    <button class="btn btn-outline-secondary" type="button" (click)="verPassword.set(!verPassword())">
+                      {{ verPassword() ? 'Ocultar' : 'Mostrar' }}
+                    </button>
+                  </div>
+                  <app-error-campo [control]="form.controls.password" />
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <label for="confirmar" class="form-label">Confirmar contraseña <span class="text-danger">*</span></label>
+                  <input id="confirmar" [type]="verPassword() ? 'text' : 'password'" class="form-control" formControlName="confirmar"
+                    autocomplete="new-password" [attr.maxlength]="passwordMax"
+                    [class.is-invalid]="(form.controls.confirmar.invalid && form.controls.confirmar.touched) || noCoinciden"
+                    [class.is-valid]="form.controls.confirmar.valid && form.controls.confirmar.touched && !noCoinciden">
+                  <app-error-campo [control]="form.controls.confirmar"
+                    [errorExtra]="form.hasError('passwordsNoCoinciden') ? 'Las contraseñas no coinciden.' : null" />
+                </div>
+
+                <div class="col-12">
+                  <app-password-checklist [valor]="form.controls.password.value" />
+                </div>
+
+                <div class="col-12">
+                  <div class="form-check">
+                    <input id="aceptaNormas" type="checkbox" class="form-check-input" formControlName="aceptaNormas"
+                      [class.is-invalid]="form.controls.aceptaNormas.invalid && form.controls.aceptaNormas.touched">
+                    <label for="aceptaNormas" class="form-check-label">Acepto las normas de convivencia del foro</label>
+                  </div>
+                  <app-error-campo [control]="form.controls.aceptaNormas" [mensajes]="{ required: 'Debes aceptar las normas para registrarte.' }" />
+                </div>
+
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary w-100 py-2" [disabled]="form.invalid">Crear cuenta</button>
+                </div>
+              </div>
+            </form>
+
+            <p class="text-center mt-4 mb-0">
+              ¿Ya tienes cuenta? <a routerLink="/login" class="fw-semibold">Inicia sesión</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

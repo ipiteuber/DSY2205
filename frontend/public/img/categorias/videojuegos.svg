@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Videojuegos">
+  <circle cx="80" cy="60" r="54" fill="#7048e8" opacity="0.12"/>
+  <path d="M46 38h68c14 0 22 12 24 30 2 16-4 26-12 26-7 0-11-6-16-12H50c-5 6-9 12-16 12-8 0-14-10-12-26 2-18 10-30 24-30z" fill="#5f3dc4"/>
+  <rect x="44" y="56" width="22" height="7" rx="2" fill="#fff"/>
+  <rect x="51.5" y="48.5" width="7" height="22" rx="2" fill="#fff"/>
+  <circle cx="106" cy="52" r="5" fill="#ffc13b"/>
+  <circle cx="116" cy="62" r="5" fill="#ff6b6b"/>
+  <circle cx="96" cy="62" r="5" fill="#51cf66"/>
+  <circle cx="106" cy="72" r="5" fill="#4dabf7"/>
+</svg>

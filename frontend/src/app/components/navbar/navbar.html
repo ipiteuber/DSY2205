@@ -1,0 +1,69 @@
+<nav class="navbar navbar-expand-lg navbar-dark navbar-foro sticky-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/inicio" (click)="cerrarMenu()">
+      <img src="logo.svg" alt="" width="36" height="36">
+      <span class="marca">Foro<span class="marca-acento">Duoc</span></span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+      aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="menuPrincipal" #menu>
+      @if (auth.usuarioActual(); as usuario) {
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/inicio" routerLinkActive="active" (click)="cerrarMenu()">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/buscar" routerLinkActive="active" (click)="cerrarMenu()">Buscar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/temas/nuevo" routerLinkActive="active" (click)="cerrarMenu()">Publicar tema</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/mis-temas" routerLinkActive="active" (click)="cerrarMenu()">Mis temas</a>
+          </li>
+          @if (auth.puedeModerar()) {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/moderacion" routerLinkActive="active" (click)="cerrarMenu()">Moderación</a>
+            </li>
+          }
+          @if (auth.esAdmin()) {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/admin/usuarios" routerLinkActive="active" (click)="cerrarMenu()">Usuarios</a>
+            </li>
+          }
+        </ul>
+
+        <div class="dropdown">
+          <button class="btn btn-usuario dropdown-toggle d-flex align-items-center gap-2" type="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="avatar">{{ usuario.nombreCompleto.charAt(0) }}</span>
+            <span class="text-start lh-sm">
+              <span class="d-block fw-semibold">{{ usuario.nombreUsuario }}</span>
+              <app-rol-badge [rol]="auth.rolActual()" />
+            </span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><h6 class="dropdown-header">{{ usuario.nombreCompleto }}</h6></li>
+            <li><a class="dropdown-item" routerLink="/perfil" (click)="cerrarMenu()">Mi perfil</a></li>
+            <li><a class="dropdown-item" routerLink="/mis-temas" (click)="cerrarMenu()">Mis temas</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><button class="dropdown-item text-danger" type="button" (click)="cerrarSesion()">Cerrar sesión</button></li>
+          </ul>
+        </div>
+      } @else {
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-2">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active" (click)="cerrarMenu()">Iniciar sesión</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-acento" routerLink="/registro" (click)="cerrarMenu()">Crear cuenta</a>
+          </li>
+        </ul>
+      }
+    </div>
+  </div>
+</nav>

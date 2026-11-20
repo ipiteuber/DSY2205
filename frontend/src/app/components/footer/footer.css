@@ -1,0 +1,13 @@
+.footer-foro {
+  background: var(--fd-primario-oscuro);
+  color: #fff;
+}
+
+.footer-foro a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+}
+
+.footer-foro a:hover {
+  color: var(--fd-acento);
+}

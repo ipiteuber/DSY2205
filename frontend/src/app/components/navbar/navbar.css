@@ -1,0 +1,46 @@
+.navbar-foro {
+  background: linear-gradient(90deg, var(--fd-primario-oscuro), var(--fd-primario));
+}
+
+.marca {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 1.35rem;
+}
+
+.marca-acento {
+  color: var(--fd-acento);
+}
+
+.nav-link {
+  font-weight: 600;
+}
+
+.nav-link.active {
+  color: var(--fd-acento) !important;
+}
+
+.btn-usuario {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.3rem 0.75rem;
+}
+
+.btn-usuario:hover,
+.btn-usuario.show {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--fd-acento);
+  color: var(--fd-primario-oscuro);
+  font-weight: 800;
+}

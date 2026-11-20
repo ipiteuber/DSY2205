@@ -1,0 +1,236 @@
+/* Estilos globales de ForoDuoc, la paleta queda en variables para usarla en toda la app */
+:root {
+  --fd-primario: #2f3c9e;
+  --fd-primario-rgb: 47, 60, 158;
+  --fd-primario-oscuro: #1b2366;
+  --fd-primario-suave: #e6e9fa;
+  --fd-acento: #ffc13b;
+  --fd-acento-oscuro: #e0a419;
+  --fd-exito: #2b8a3e;
+  --fd-fondo: #f4f6fb;
+  --fd-fondo-suave: #f8f9fd;
+  --fd-texto: #1e2235;
+  --fd-texto-suave: #5b6177;
+  --fd-borde: #e1e5f0;
+  --fd-radio: 0.75rem;
+  --fd-sombra: 0 8px 24px rgba(27, 35, 102, 0.12);
+
+  /* Variables de Bootstrap apuntando a la paleta */
+  --bs-primary: var(--fd-primario);
+  --bs-primary-rgb: var(--fd-primario-rgb);
+  --bs-link-color: var(--fd-primario);
+  --bs-link-color-rgb: var(--fd-primario-rgb);
+  --bs-link-hover-color: var(--fd-primario-oscuro);
+  --bs-body-bg: var(--fd-fondo);
+  --bs-body-color: var(--fd-texto);
+  --bs-border-color: var(--fd-borde);
+  --bs-border-radius: 0.6rem;
+  --bs-body-font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --bs-focus-ring-color: rgba(var(--fd-primario-rgb), 0.25);
+}
+
+body {
+  background: var(--fd-fondo);
+  color: var(--fd-texto);
+}
+
+.card {
+  --bs-card-border-color: var(--fd-borde);
+  --bs-card-border-radius: var(--fd-radio);
+  box-shadow: 0 1px 3px rgba(27, 35, 102, 0.05);
+}
+
+.btn {
+  font-weight: 600;
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--fd-primario);
+  --bs-btn-border-color: var(--fd-primario);
+  --bs-btn-hover-bg: var(--fd-primario-oscuro);
+  --bs-btn-hover-border-color: var(--fd-primario-oscuro);
+  --bs-btn-active-bg: var(--fd-primario-oscuro);
+  --bs-btn-active-border-color: var(--fd-primario-oscuro);
+  --bs-btn-disabled-bg: var(--fd-primario);
+  --bs-btn-disabled-border-color: var(--fd-primario);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--fd-primario);
+  --bs-btn-border-color: var(--fd-primario);
+  --bs-btn-hover-bg: var(--fd-primario);
+  --bs-btn-hover-border-color: var(--fd-primario);
+  --bs-btn-active-bg: var(--fd-primario-oscuro);
+  --bs-btn-active-border-color: var(--fd-primario-oscuro);
+}
+
+.btn-acento {
+  --bs-btn-color: var(--fd-primario-oscuro);
+  --bs-btn-bg: var(--fd-acento);
+  --bs-btn-border-color: var(--fd-acento);
+  --bs-btn-hover-color: var(--fd-primario-oscuro);
+  --bs-btn-hover-bg: var(--fd-acento-oscuro);
+  --bs-btn-hover-border-color: var(--fd-acento-oscuro);
+  --bs-btn-active-color: var(--fd-primario-oscuro);
+  --bs-btn-active-bg: var(--fd-acento-oscuro);
+  --bs-btn-active-border-color: var(--fd-acento-oscuro);
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  border-color: rgba(var(--fd-primario-rgb), 0.6);
+  box-shadow: 0 0 0 0.2rem rgba(var(--fd-primario-rgb), 0.2);
+}
+
+.form-check-input:checked {
+  background-color: var(--fd-primario);
+  border-color: var(--fd-primario);
+}
+
+.progress-bar {
+  background-color: var(--fd-primario);
+}
+
+.nav-pills {
+  --bs-nav-pills-link-active-bg: var(--fd-primario);
+}
+
+.pestanas .nav-link {
+  background: #fff;
+  border: 1px solid var(--fd-borde);
+  color: var(--fd-texto);
+}
+
+.pestanas .nav-link.active {
+  color: #fff;
+}
+
+.text-bg-primary {
+  background-color: var(--fd-primario) !important;
+}
+
+.texto-primario {
+  color: var(--fd-primario);
+}
+
+/* Badges de roles */
+.rol-badge {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.rol-admin {
+  background: var(--fd-acento);
+  color: var(--fd-primario-oscuro);
+}
+
+.rol-moderador {
+  background: #12b886;
+  color: #fff;
+}
+
+.rol-usuario {
+  background: var(--fd-primario-suave);
+  color: var(--fd-primario);
+}
+
+.badge-norma {
+  background: var(--fd-primario-suave);
+  color: var(--fd-primario);
+}
+
+.norma-card {
+  border-left: 4px solid var(--fd-acento);
+}
+
+/* Pantallas de login, registro y recuperar contrasena */
+.auth-wrapper {
+  padding: 3rem 0;
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255, 193, 59, 0.25), transparent 35%),
+    linear-gradient(135deg, var(--fd-primario-oscuro), var(--fd-primario));
+}
+
+.auth-card {
+  border: none;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.demo-card .list-group-item {
+  background: transparent;
+}
+
+.titulo-seccion {
+  position: relative;
+  padding-bottom: 0.4rem;
+}
+
+.titulo-seccion::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 48px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--fd-acento);
+}
+
+.vacio {
+  background: #fff;
+  border: 2px dashed var(--fd-borde);
+  border-radius: var(--fd-radio);
+}
+
+.contenido-moderado {
+  background: var(--fd-fondo-suave);
+  border-left: 4px solid var(--fd-acento);
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.4rem;
+  overflow-wrap: anywhere;
+}
+
+.avatar-grande {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--fd-primario), var(--fd-primario-oscuro));
+  color: var(--fd-acento);
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.dato-perfil {
+  background: var(--fd-fondo-suave);
+  border: 1px solid var(--fd-borde);
+  border-radius: var(--fd-radio);
+  padding: 0.5rem;
+}
+
+.selector-rol {
+  min-width: 150px;
+}
+
+.min-w-160 {
+  min-width: 160px;
+}
+
+.min-w-200 {
+  min-width: 200px;
+}
+
+.breadcrumb {
+  --bs-breadcrumb-divider-color: var(--fd-texto-suave);
+  font-size: 0.9rem;
+}
+
+.breadcrumb a {
+  text-decoration: none;
+}

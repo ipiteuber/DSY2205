@@ -1,0 +1,61 @@
+@if (categoria(); as cat) {
+  <section class="cabecera-categoria" [style.--color-categoria]="cat.color">
+    <div class="container py-4">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-3">
+          <li class="breadcrumb-item"><a routerLink="/inicio">Inicio</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ cat.nombre }}</li>
+        </ol>
+      </nav>
+      <div class="row align-items-center g-3">
+        <div class="col-4 col-md-2 text-center">
+          <img [src]="cat.imagen" [alt]="'Ilustración de ' + cat.nombre" class="img-fluid imagen-categoria">
+        </div>
+        <div class="col-8 col-md-7">
+          <h1 class="h2 fw-bold mb-1">{{ cat.nombre }}</h1>
+          <p class="mb-0 text-body-secondary">{{ cat.descripcion }}</p>
+        </div>
+        <div class="col-12 col-md-3 text-md-end">
+          <a class="btn btn-primary w-100 w-md-auto" routerLink="/temas/nuevo" [queryParams]="{ categoria: cat.idCategoria }">+ Publicar en {{ cat.nombre }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container py-4">
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
+      <p class="mb-0 text-body-secondary">{{ temas().length }} {{ temas().length === 1 ? 'tema' : 'temas' }}</p>
+      <div class="d-flex align-items-center gap-2">
+        <label for="orden" class="small text-nowrap">Ordenar por</label>
+        <select id="orden" class="form-select form-select-sm" [value]="orden()" (change)="cambiarOrden($any($event.target).value)">
+          <option value="recientes">Más recientes</option>
+          <option value="visitas">Más visitados</option>
+          <option value="comentarios">Más comentados</option>
+        </select>
+      </div>
+    </div>
+
+    @if (auth.puedeModerar()) {
+      <div class="alert alert-warning small py-2">Vista de moderación: Los temas baneados se muestran marcados.</div>
+    }
+
+    <div class="row g-3">
+      @for (tema of temas(); track tema.idTema) {
+        <div class="col-12 col-md-6 col-xl-4">
+          <app-tema-card [tema]="tema" [mostrarCategoria]="false" />
+        </div>
+      } @empty {
+        <div class="col-12">
+          <div class="vacio text-center p-5">
+            <p class="mb-3">Todavía no hay temas en esta categoría.</p>
+            <a class="btn btn-primary" routerLink="/temas/nuevo" [queryParams]="{ categoria: cat.idCategoria }">Sé el primero en publicar</a>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+} @else {
+  <div class="container py-5">
+    <div class="alert alert-warning">Error: La categoría que buscas no existe. <a routerLink="/inicio">Volver al inicio</a></div>
+  </div>
+}
