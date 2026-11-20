@@ -1,0 +1,55 @@
+import { Usuario } from '../models/usuario.model';
+
+// Usuarios iniciales (tabla USUARIOS), en el front las contrasenas van en texto plano
+export const USUARIOS: Usuario[] = [
+  {
+    idUsuario: 1,
+    nombreUsuario: 'admin',
+    email: 'admin@foroduoc.cl',
+    password: 'Admin2026',
+    nombreCompleto: 'Administrador del Foro',
+    idRol: 1,
+    activo: true,
+    fechaRegistro: new Date('2026-08-01T09:00:00'),
+  },
+  {
+    idUsuario: 2,
+    nombreUsuario: 'mod_camila',
+    email: 'camila.rojas@foroduoc.cl',
+    password: 'Moder2026',
+    nombreCompleto: 'Camila Rojas',
+    idRol: 2,
+    activo: true,
+    fechaRegistro: new Date('2026-08-03T10:30:00'),
+  },
+  {
+    idUsuario: 3,
+    nombreUsuario: 'juanito_dev',
+    email: 'juan.perez@foroduoc.cl',
+    password: 'Usuario2026',
+    nombreCompleto: 'Juan Pérez',
+    idRol: 3,
+    activo: true,
+    fechaRegistro: new Date('2026-08-10T18:15:00'),
+  },
+  {
+    idUsuario: 4,
+    nombreUsuario: 'vale_gamer',
+    email: 'valentina.soto@foroduoc.cl',
+    password: 'Usuario2026',
+    nombreCompleto: 'Valentina Soto',
+    idRol: 3,
+    activo: true,
+    fechaRegistro: new Date('2026-08-12T20:40:00'),
+  },
+  {
+    idUsuario: 5,
+    nombreUsuario: 'nico_musica',
+    email: 'nicolas.fuentes@foroduoc.cl',
+    password: 'Usuario2026',
+    nombreCompleto: 'Nicolás Fuentes',
+    idRol: 3,
+    activo: true,
+    fechaRegistro: new Date('2026-08-20T16:05:00'),
+  },
+];

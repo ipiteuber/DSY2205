@@ -1,0 +1,104 @@
+<div class="container py-4 py-lg-5">
+  <h1 class="h3 fw-bold mb-4">Mi perfil</h1>
+
+  @if (auth.usuarioActual(); as usuario) {
+    <div class="row g-4">
+      <div class="col-12 col-lg-4">
+        <div class="card text-center">
+          <div class="card-body p-4">
+            <div class="avatar-grande mx-auto mb-3">{{ usuario.nombreCompleto.charAt(0) }}</div>
+            <h2 class="h5 fw-bold mb-0">{{ usuario.nombreCompleto }}</h2>
+            <p class="text-body-secondary mb-2">&#64;{{ usuario.nombreUsuario }}</p>
+            <p class="mb-3">Rol: <app-rol-badge [rol]="auth.rolActual()" /></p>
+            <div class="row g-2">
+              <div class="col-6">
+                <div class="dato-perfil"><strong class="d-block fs-4">{{ totalTemas() }}</strong><small>Temas</small></div>
+              </div>
+              <div class="col-6">
+                <div class="dato-perfil"><strong class="d-block fs-4">{{ totalComentarios() }}</strong><small>Comentarios</small></div>
+              </div>
+            </div>
+            <p class="small text-body-secondary mt-3 mb-0">Miembro desde {{ usuario.fechaRegistro | date: "MMMM 'de' y" }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-8">
+        <form class="card mb-4" [formGroup]="formDatos" (ngSubmit)="guardarDatos()" novalidate>
+          <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Datos personales</h2>
+            @if (mensajeDatos(); as texto) {
+              <div class="alert alert-success alert-dismissible py-2" role="status">
+                {{ texto }}
+                <button type="button" class="btn-close" aria-label="Cerrar" (click)="mensajeDatos.set(null)"></button>
+              </div>
+            }
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label for="nombreUsuario" class="form-label">Nombre de usuario</label>
+                <input id="nombreUsuario" type="text" class="form-control" [value]="usuario.nombreUsuario" disabled>
+                <div class="form-text">El nombre de usuario no se puede cambiar.</div>
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="nombreCompleto" class="form-label">Nombre completo <span class="text-danger">*</span></label>
+                <input id="nombreCompleto" type="text" class="form-control" formControlName="nombreCompleto" maxlength="100" autocomplete="name"
+                  [class.is-invalid]="formDatos.controls.nombreCompleto.invalid && formDatos.controls.nombreCompleto.touched">
+                <app-error-campo [control]="formDatos.controls.nombreCompleto" [mensajes]="mensajesNombre" />
+              </div>
+              <div class="col-12">
+                <label for="email" class="form-label">Correo electrónico <span class="text-danger">*</span></label>
+                <input id="email" type="email" class="form-control" formControlName="email" maxlength="100" autocomplete="email"
+                  [class.is-invalid]="formDatos.controls.email.invalid && formDatos.controls.email.touched">
+                <app-error-campo [control]="formDatos.controls.email" [mensajes]="mensajesEmail" />
+              </div>
+            </div>
+            <div class="d-flex flex-column flex-sm-row justify-content-end gap-2 mt-4">
+              <button type="button" class="btn btn-outline-secondary" (click)="cargarDatos()" [disabled]="formDatos.pristine">Descartar cambios</button>
+              <button type="submit" class="btn btn-primary" [disabled]="formDatos.invalid || formDatos.pristine">Guardar datos</button>
+            </div>
+          </div>
+        </form>
+
+        <form class="card" [formGroup]="formPassword" (ngSubmit)="cambiarPassword()" novalidate>
+          <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Cambiar contraseña</h2>
+            @if (mensajePassword(); as texto) {
+              <div class="alert alert-success alert-dismissible py-2" role="status">
+                {{ texto }}
+                <button type="button" class="btn-close" aria-label="Cerrar" (click)="mensajePassword.set(null)"></button>
+              </div>
+            }
+            <div class="row g-3">
+              <div class="col-12">
+                <label for="actual" class="form-label">Contraseña actual <span class="text-danger">*</span></label>
+                <input id="actual" type="password" class="form-control" formControlName="actual" autocomplete="current-password" [attr.maxlength]="passwordMax"
+                  [class.is-invalid]="formPassword.controls.actual.invalid && formPassword.controls.actual.touched">
+                <app-error-campo [control]="formPassword.controls.actual" [mensajes]="{ passwordIncorrecta: 'La contraseña actual no es correcta.' }" />
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="nueva" class="form-label">Nueva contraseña <span class="text-danger">*</span></label>
+                <input id="nueva" type="password" class="form-control" formControlName="nueva" autocomplete="new-password" [attr.maxlength]="passwordMax"
+                  [class.is-invalid]="(formPassword.controls.nueva.invalid && formPassword.controls.nueva.touched) || repetida">
+                <app-error-campo [control]="formPassword.controls.nueva"
+                  [errorExtra]="formPassword.hasError('passwordRepetida') ? 'La nueva contraseña debe ser distinta a la actual.' : null" />
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="confirmar" class="form-label">Confirmar nueva contraseña <span class="text-danger">*</span></label>
+                <input id="confirmar" type="password" class="form-control" formControlName="confirmar" autocomplete="new-password" [attr.maxlength]="passwordMax"
+                  [class.is-invalid]="(formPassword.controls.confirmar.invalid && formPassword.controls.confirmar.touched) || noCoinciden">
+                <app-error-campo [control]="formPassword.controls.confirmar"
+                  [errorExtra]="formPassword.hasError('passwordsNoCoinciden') ? 'Las contraseñas no coinciden.' : null" />
+              </div>
+              <div class="col-12">
+                <app-password-checklist [valor]="formPassword.controls.nueva.value" />
+              </div>
+            </div>
+            <div class="text-end mt-4">
+              <button type="submit" class="btn btn-primary" [disabled]="formPassword.invalid">Actualizar contraseña</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

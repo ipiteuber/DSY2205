@@ -1,0 +1,85 @@
+<section class="hero text-white">
+  <div class="container py-5">
+    <div class="row align-items-center g-4">
+      <div class="col-12 col-lg-7">
+        <p class="text-uppercase small fw-semibold mb-2 opacity-75">Hola, {{ auth.usuarioActual()?.nombreCompleto }}</p>
+        <h1 class="display-5 fw-bold mb-3">¿De qué quieres hablar hoy?</h1>
+        <form class="d-flex flex-column flex-sm-row gap-2" role="search" (ngSubmit)="buscar()">
+          <label for="busquedaRapida" class="visually-hidden">Buscar temas</label>
+          <input id="busquedaRapida" class="form-control form-control-lg" type="search" name="q" maxlength="100"
+            placeholder="Buscar temas por título o contenido" [ngModel]="textoBusqueda()" (ngModelChange)="textoBusqueda.set($event)">
+          <button class="btn btn-acento btn-lg px-4" type="submit">Buscar</button>
+        </form>
+      </div>
+      <div class="col-12 col-lg-5">
+        <div class="row g-2 text-center">
+          @for (dato of estadisticas(); track dato.etiqueta) {
+            <div class="col-4">
+              <div class="estadistica">
+                <div class="fs-2 fw-bold">{{ dato.valor }}</div>
+                <div class="small opacity-75">{{ dato.etiqueta }}</div>
+              </div>
+            </div>
+          }
+        </div>
+        <a routerLink="/temas/nuevo" class="btn btn-light w-100 mt-3 fw-semibold">+ Publicar un tema</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-end mb-3">
+    <h2 class="h4 fw-bold mb-0 titulo-seccion">Categorías</h2>
+  </div>
+  <div class="row g-4 mb-5">
+    @for (categoria of foro.categorias; track categoria.idCategoria) {
+      <div class="col-12 col-sm-6 col-lg-4">
+        <a class="card categoria-card h-100 text-decoration-none" [routerLink]="['/categorias', categoria.idCategoria]"
+          [style.--color-categoria]="categoria.color">
+          <div class="categoria-imagen">
+            <img [src]="categoria.imagen" [alt]="'Ilustración de ' + categoria.nombre" class="img-fluid">
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <h3 class="h5 fw-bold mb-0">{{ categoria.nombre }}</h3>
+              <span class="badge rounded-pill badge-contador">{{ contarTemas(categoria.idCategoria) }} {{ contarTemas(categoria.idCategoria) === 1 ? 'tema' : 'temas' }}</span>
+            </div>
+            <p class="small text-body-secondary mb-0">{{ categoria.descripcion }}</p>
+          </div>
+        </a>
+      </div>
+    }
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-8">
+      <h2 class="h4 fw-bold mb-3 titulo-seccion">Temas recientes</h2>
+      <div class="row g-3">
+        @for (tema of recientes(); track tema.idTema) {
+          <div class="col-12 col-md-6">
+            <app-tema-card [tema]="tema" />
+          </div>
+        } @empty {
+          <div class="col-12"><div class="alert alert-light">Aún no hay temas publicados.</div></div>
+        }
+      </div>
+    </div>
+    <div class="col-12 col-lg-4">
+      <h2 class="h4 fw-bold mb-3 titulo-seccion">Más populares</h2>
+      <div class="card">
+        <ol class="list-group list-group-flush list-group-numbered">
+          @for (tema of populares(); track tema.idTema) {
+            <li class="list-group-item d-flex justify-content-between align-items-start gap-2">
+              <div class="ms-2 me-auto">
+                <a class="fw-semibold text-decoration-none enlace-tema" [routerLink]="['/temas', tema.idTema]">{{ tema.titulo }}</a>
+                <div class="small text-body-secondary">{{ nombreCategoria(tema.idCategoria) }}</div>
+              </div>
+              <span class="badge rounded-pill text-bg-light text-nowrap">👁 {{ tema.visitas }}</span>
+            </li>
+          }
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>

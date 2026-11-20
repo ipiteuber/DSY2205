@@ -1,0 +1,82 @@
+<section class="auth-wrapper">
+  <div class="container">
+    <div class="row justify-content-center align-items-center g-4">
+      <div class="col-12 col-md-10 col-lg-5 order-lg-2">
+        <div class="card auth-card">
+          <div class="card-body p-4 p-sm-5">
+            <div class="text-center mb-4">
+              <img src="logo.svg" alt="Logo ForoDuoc" width="64" height="64" class="mb-2">
+              <h1 class="h3 fw-bold mb-1">Inicio de sesión</h1>
+              <p class="text-body-secondary mb-0">Ingresa para participar en ForoDuoc</p>
+            </div>
+
+            @if (registrado()) {
+              <div class="alert alert-success">Cuenta creada: Ya puedes iniciar sesión con tus datos.</div>
+            }
+            @if (recuperado()) {
+              <div class="alert alert-success">Contraseña actualizada: Inicia sesión con tu nueva contraseña.</div>
+            }
+            @if (error(); as mensaje) {
+              <div class="alert alert-danger" role="alert">{{ mensaje }}</div>
+            }
+
+            <form [formGroup]="form" (ngSubmit)="ingresar()" novalidate>
+              <div class="mb-3">
+                <label for="credencial" class="form-label">Nombre de usuario o correo</label>
+                <input id="credencial" type="text" class="form-control" formControlName="credencial" autocomplete="username"
+                  [class.is-invalid]="form.controls.credencial.invalid && form.controls.credencial.touched"
+                  placeholder="ej. juanito_dev">
+                <app-error-campo [control]="form.controls.credencial" />
+              </div>
+
+              <div class="mb-2">
+                <label for="password" class="form-label">Contraseña</label>
+                <div class="input-group has-validation">
+                  <input id="password" [type]="verPassword() ? 'text' : 'password'" class="form-control" formControlName="password"
+                    autocomplete="current-password" maxlength="20"
+                    [class.is-invalid]="form.controls.password.invalid && form.controls.password.touched">
+                  <button class="btn btn-outline-secondary" type="button" (click)="verPassword.set(!verPassword())">
+                    {{ verPassword() ? 'Ocultar' : 'Mostrar' }}
+                  </button>
+                </div>
+                <app-error-campo [control]="form.controls.password" />
+              </div>
+
+              <div class="text-end mb-4">
+                <a routerLink="/recuperar-contrasena" class="small">¿Olvidaste tu contraseña?</a>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 py-2" [disabled]="form.invalid">Ingresar</button>
+            </form>
+
+            <p class="text-center mt-4 mb-0">
+              ¿No tienes cuenta? <a routerLink="/registro" class="fw-semibold">Regístrate aquí</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-10 col-lg-5 order-lg-1">
+        <div class="auth-intro text-white">
+          <h2 class="display-6 fw-bold">Conversa, pregunta y comparte</h2>
+          <p class="lead">Seis categorías para hablar de tecnología, videojuegos, música, cine, deportes y cocina.</p>
+          <div class="card demo-card mt-4">
+            <div class="card-body">
+              <h3 class="h6 fw-bold mb-2">Cuentas de prueba</h3>
+              <p class="small text-body-secondary mb-2">Haz clic en una cuenta para completar el formulario.</p>
+              <div class="list-group list-group-flush">
+                @for (cuenta of cuentasDemo; track cuenta.usuario) {
+                  <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0"
+                    (click)="usarCuenta(cuenta.usuario, cuenta.password)">
+                    <span><strong>{{ cuenta.usuario }}</strong> <small class="text-body-secondary">/ {{ cuenta.password }}</small></span>
+                    <span class="badge text-bg-light">{{ cuenta.rol }}</span>
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

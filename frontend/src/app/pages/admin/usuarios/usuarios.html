@@ -1,0 +1,119 @@
+<div class="container py-4 py-lg-5">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+      <h1 class="h3 fw-bold mb-1">Administración de usuarios</h1>
+      <p class="text-body-secondary mb-0">Cambia roles, activa o desactiva cuentas y elimina usuarios.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+      @for (r of resumen(); track r.rol) {
+        <span class="d-inline-flex align-items-center gap-1 small"><app-rol-badge [rol]="r.rol" /> {{ r.total }}</span>
+      }
+    </div>
+  </div>
+
+  @if (mensaje(); as texto) {
+    <div class="alert alert-success alert-dismissible" role="status">
+      {{ texto }}
+      <button type="button" class="btn-close" aria-label="Cerrar" (click)="mensaje.set(null)"></button>
+    </div>
+  }
+
+  <div class="row g-2 mb-3">
+    <div class="col-12 col-md-8">
+      <label for="buscarUsuario" class="visually-hidden">Buscar usuario</label>
+      <input id="buscarUsuario" type="search" class="form-control" maxlength="100" placeholder="Buscar por nombre, usuario o correo"
+        [value]="texto()" (input)="buscar($any($event.target).value)">
+    </div>
+    <div class="col-12 col-md-4">
+      <label for="filtroRol" class="visually-hidden">Filtrar por rol</label>
+      <select id="filtroRol" class="form-select" (change)="filtrarRol($any($event.target).value)">
+        <option value="">Todos los roles</option>
+        @for (r of usuarioService.roles; track r.idRol) {
+          <option [value]="r.idRol">{{ etiquetas[r.nombre] }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Tabla para tablet y escritorio -->
+  <div class="card d-none d-md-block">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th scope="col">Usuario</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Registro</th>
+            <th scope="col">Rol</th>
+            <th scope="col">Estado</th>
+            <th scope="col" class="text-end">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of lista(); track u.idUsuario) {
+            <tr [class.opacity-75]="!u.activo">
+              <td>
+                <div class="fw-semibold">{{ u.nombreUsuario }} @if (esYo(u)) { <span class="badge text-bg-light">Tú</span> }</div>
+                <small class="text-body-secondary">{{ u.nombreCompleto }}</small>
+              </td>
+              <td class="small">{{ u.email }}</td>
+              <td class="small text-nowrap">{{ u.fechaRegistro | date: 'dd-MM-y' }}</td>
+              <td>
+                <select class="form-select form-select-sm selector-rol" [attr.aria-label]="'Rol de ' + u.nombreUsuario"
+                  [disabled]="esYo(u)" (change)="cambiarRol(u, $any($event.target).value)">
+                  @for (r of usuarioService.roles; track r.idRol) {
+                    <option [value]="r.idRol" [selected]="r.idRol === u.idRol">{{ etiquetas[r.nombre] }}</option>
+                  }
+                </select>
+              </td>
+              <td>
+                <span class="badge" [class.text-bg-success]="u.activo" [class.text-bg-secondary]="!u.activo">{{ u.activo ? 'Activo' : 'Inactivo' }}</span>
+              </td>
+              <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-sm me-1" [class.btn-outline-warning]="u.activo" [class.btn-outline-success]="!u.activo"
+                  [disabled]="esYo(u)" (click)="cambiarEstado(u)">{{ u.activo ? 'Desactivar' : 'Activar' }}</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" [disabled]="esYo(u)" (click)="eliminar(u)">Eliminar</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="6" class="text-center text-body-secondary py-4">No hay usuarios que coincidan.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tarjetas para celular -->
+  <div class="row g-3 d-md-none">
+    @for (u of lista(); track u.idUsuario) {
+      <div class="col-12">
+        <div class="card" [class.opacity-75]="!u.activo">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+              <div>
+                <div class="fw-semibold">{{ u.nombreUsuario }} @if (esYo(u)) { <span class="badge text-bg-light">Tú</span> }</div>
+                <small class="text-body-secondary d-block">{{ u.nombreCompleto }}</small>
+                <small class="text-body-secondary">{{ u.email }}</small>
+              </div>
+              <span class="badge" [class.text-bg-success]="u.activo" [class.text-bg-secondary]="!u.activo">{{ u.activo ? 'Activo' : 'Inactivo' }}</span>
+            </div>
+            <label class="form-label small mb-1" [attr.for]="'rol-' + u.idUsuario">Rol</label>
+            <select class="form-select form-select-sm mb-3" [id]="'rol-' + u.idUsuario" [disabled]="esYo(u)"
+              (change)="cambiarRol(u, $any($event.target).value)">
+              @for (r of usuarioService.roles; track r.idRol) {
+                <option [value]="r.idRol" [selected]="r.idRol === u.idRol">{{ etiquetas[r.nombre] }}</option>
+              }
+            </select>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-sm flex-fill" [class.btn-outline-warning]="u.activo" [class.btn-outline-success]="!u.activo"
+                [disabled]="esYo(u)" (click)="cambiarEstado(u)">{{ u.activo ? 'Desactivar' : 'Activar' }}</button>
+              <button type="button" class="btn btn-sm btn-outline-danger flex-fill" [disabled]="esYo(u)" (click)="eliminar(u)">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="col-12"><div class="vacio text-center p-4">No hay usuarios que coincidan.</div></div>
+    }
+  </div>
+</div>

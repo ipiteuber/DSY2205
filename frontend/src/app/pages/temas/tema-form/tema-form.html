@@ -1,0 +1,62 @@
+<div class="container py-4 py-lg-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-9 col-xl-8">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/inicio">Inicio</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ esEdicion() ? 'Editar tema' : 'Publicar tema' }}</li>
+        </ol>
+      </nav>
+
+      <div class="card">
+        <div class="card-body p-4">
+          <h1 class="h3 fw-bold mb-1">{{ esEdicion() ? 'Editar tema' : 'Publicar un tema nuevo' }}</h1>
+          <p class="text-body-secondary mb-4">Elige la categoría correcta y escribe un título claro.</p>
+
+          <form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+            <div class="mb-3">
+              <label for="idCategoria" class="form-label">Categoría <span class="text-danger">*</span></label>
+              <select id="idCategoria" class="form-select" formControlName="idCategoria"
+                [class.is-invalid]="form.controls.idCategoria.invalid && form.controls.idCategoria.touched">
+                <option value="" disabled>Selecciona una categoría</option>
+                @for (cat of foro.categorias; track cat.idCategoria) {
+                  <option [value]="cat.idCategoria">{{ cat.nombre }}</option>
+                }
+              </select>
+              <app-error-campo [control]="form.controls.idCategoria" [mensajes]="{ required: 'Debes seleccionar una categoría.' }" />
+            </div>
+
+            <div class="mb-3">
+              <label for="titulo" class="form-label">Título <span class="text-danger">*</span></label>
+              <input id="titulo" type="text" class="form-control" formControlName="titulo" maxlength="100"
+                [class.is-invalid]="form.controls.titulo.invalid && form.controls.titulo.touched"
+                placeholder="ej. ¿Qué notebook me recomiendan para programar?">
+              <div class="d-flex justify-content-between align-items-start">
+                <app-error-campo [control]="form.controls.titulo" />
+                <small class="text-body-secondary ms-auto">{{ form.controls.titulo.value.length }}/100</small>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="contenido" class="form-label">Contenido <span class="text-danger">*</span></label>
+              <textarea id="contenido" rows="8" class="form-control" formControlName="contenido" maxlength="2000"
+                [class.is-invalid]="form.controls.contenido.invalid && form.controls.contenido.touched"
+                placeholder="Cuenta los detalles de tu tema"></textarea>
+              <div class="d-flex justify-content-between align-items-start">
+                <app-error-campo [control]="form.controls.contenido" />
+                <small class="text-body-secondary ms-auto">{{ form.controls.contenido.value.length }}/2000</small>
+              </div>
+            </div>
+
+            <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+              <button type="button" class="btn btn-outline-secondary" (click)="cancelar()">Cancelar</button>
+              <button type="submit" class="btn btn-primary px-4" [disabled]="form.invalid">
+                {{ esEdicion() ? 'Guardar cambios' : 'Publicar tema' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

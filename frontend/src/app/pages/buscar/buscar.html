@@ -1,0 +1,45 @@
+<div class="container py-4 py-lg-5">
+  <h1 class="h3 fw-bold mb-1">Búsqueda de temas</h1>
+  <p class="text-body-secondary">Busca por palabras del título o del contenido.</p>
+
+  <form class="card mb-4" [formGroup]="form" (ngSubmit)="form.markAllAsTouched()" role="search" novalidate>
+    <div class="card-body row g-3 align-items-start">
+      <div class="col-12 col-md-7 col-lg-8">
+        <label for="texto" class="form-label">Texto a buscar</label>
+        <input id="texto" type="search" class="form-control" formControlName="texto" maxlength="100"
+          placeholder="ej. Python, indie, receta..."
+          [class.is-invalid]="form.controls.texto.invalid && form.controls.texto.touched">
+        <app-error-campo [control]="form.controls.texto" />
+      </div>
+      <div class="col-12 col-md-5 col-lg-4">
+        <label for="categoria" class="form-label">Categoría</label>
+        <select id="categoria" class="form-select" formControlName="categoria">
+          <option value="">Todas las categorías</option>
+          @for (cat of foro.categorias; track cat.idCategoria) {
+            <option [value]="cat.idCategoria">{{ cat.nombre }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </form>
+
+  @if (textoValido()) {
+    <p class="text-body-secondary">
+      {{ resultados().length }} {{ resultados().length === 1 ? 'resultado' : 'resultados' }} para
+      <strong>"{{ form.controls.texto.value.trim() }}"</strong>
+    </p>
+    <div class="row g-3">
+      @for (tema of resultados(); track tema.idTema) {
+        <div class="col-12 col-md-6 col-lg-4">
+          <app-tema-card [tema]="tema" />
+        </div>
+      } @empty {
+        <div class="col-12">
+          <div class="vacio text-center p-5">No encontramos temas que coincidan con tu búsqueda.</div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="vacio text-center p-5 text-body-secondary">Escribe al menos 2 caracteres para comenzar a buscar.</div>
+  }
+</div>

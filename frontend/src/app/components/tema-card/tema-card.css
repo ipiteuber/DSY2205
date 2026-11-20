@@ -1,0 +1,35 @@
+.tema-card {
+  border: 1px solid var(--fd-borde);
+  border-left: 4px solid var(--color-categoria, var(--fd-primario));
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tema-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--fd-sombra);
+}
+
+.tema-card.baneado {
+  border-left-color: var(--bs-danger);
+  background: #fff7f7;
+}
+
+.badge-categoria {
+  position: relative;
+  z-index: 2;
+  background: var(--color-categoria, var(--fd-primario));
+}
+
+.titulo {
+  color: var(--fd-texto);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.titulo:hover {
+  color: var(--fd-primario);
+}
+
+.meta {
+  color: var(--fd-texto-suave);
+}

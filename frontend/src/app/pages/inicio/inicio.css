@@ -1,0 +1,48 @@
+.hero {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(255, 193, 59, 0.25), transparent 40%),
+    linear-gradient(120deg, var(--fd-primario-oscuro), var(--fd-primario));
+}
+
+.estadistica {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--fd-radio);
+  padding: 0.75rem 0.25rem;
+}
+
+.categoria-card {
+  border: 1px solid var(--fd-borde);
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  color: var(--fd-texto);
+}
+
+.categoria-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--fd-sombra);
+}
+
+.categoria-imagen {
+  background: color-mix(in srgb, var(--color-categoria) 14%, #fff);
+  border-bottom: 3px solid var(--color-categoria);
+  padding: 1rem;
+  text-align: center;
+}
+
+.categoria-imagen img {
+  height: 120px;
+  width: auto;
+}
+
+.badge-contador {
+  background: var(--color-categoria);
+}
+
+.enlace-tema {
+  color: var(--fd-texto);
+}
+
+.enlace-tema:hover {
+  color: var(--fd-primario);
+}
