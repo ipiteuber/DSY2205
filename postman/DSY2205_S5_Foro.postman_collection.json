@@ -1,21 +1,25 @@
 {
   "info": {
-    "name": "DSY2205 S2 - Sistema de Foros en Línea",
+    "name": "DSY2205 S5 - ForoDuoc",
     "description": "Pruebas de ms-usuarios (8081), ms-foro (8082) y ms-moderacion (8083). Ejecutar sql/script_foro.sql antes para tener los datos iniciales.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
+      "key": "servidor",
+      "value": "localhost"
+    },
+    {
       "key": "urlUsuarios",
-      "value": "http://localhost:8081"
+      "value": "http://{{servidor}}:8081"
     },
     {
       "key": "urlForo",
-      "value": "http://localhost:8082"
+      "value": "http://{{servidor}}:8082"
     },
     {
       "key": "urlModeracion",
-      "value": "http://localhost:8083"
+      "value": "http://{{servidor}}:8083"
     },
     {
       "key": "idRolNuevo",
