@@ -1,7 +1,5 @@
 package com.duoc.foro.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,16 +11,22 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 // Entidad Comentario - tabla COMENTARIOS en Oracle
 @Entity
 @Table(name = "COMENTARIOS")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Comentario {
 
     @Id
@@ -30,7 +34,6 @@ public class Comentario {
     @Column(name = "ID_COMENTARIO")
     private Long id;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ID_TEMA", nullable = false)
     private Tema tema;
@@ -47,12 +50,6 @@ public class Comentario {
     @Enumerated(EnumType.STRING)
     @Column(name = "ESTADO", nullable = false, length = 10)
     private EstadoContenido estado;
-
-    // Se muestra solo el id del tema para no repetir el tema completo en cada comentario
-    @JsonProperty("idTema")
-    public Long getIdTema() {
-        return tema != null ? tema.getId() : null;
-    }
 
     @PrePersist
     void alCrear() {

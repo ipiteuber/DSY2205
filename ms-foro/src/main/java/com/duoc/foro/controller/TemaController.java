@@ -4,8 +4,8 @@ import com.duoc.foro.dto.ComentarioRequest;
 import com.duoc.foro.dto.EstadoRequest;
 import com.duoc.foro.dto.TemaDetalle;
 import com.duoc.foro.dto.TemaRequest;
-import com.duoc.foro.model.Comentario;
-import com.duoc.foro.model.Tema;
+import com.duoc.foro.dto.ComentarioDTO;
+import com.duoc.foro.dto.TemaDTO;
 import com.duoc.foro.service.ComentarioService;
 import com.duoc.foro.service.TemaService;
 import jakarta.validation.Valid;
@@ -36,7 +36,7 @@ public class TemaController {
     private final ComentarioService comentarioService;
 
     @GetMapping
-    public List<Tema> listar() {
+    public List<TemaDTO> listar() {
         return temaService.listarActivos();
     }
 
@@ -46,37 +46,37 @@ public class TemaController {
     }
 
     @GetMapping("/categoria/{idCategoria}")
-    public List<Tema> porCategoria(@PathVariable Long idCategoria) {
+    public List<TemaDTO> porCategoria(@PathVariable Long idCategoria) {
         return temaService.buscarPorCategoria(idCategoria);
     }
 
     @GetMapping("/buscar")
-    public List<Tema> buscar(@RequestParam String texto) {
+    public List<TemaDTO> buscar(@RequestParam String texto) {
         return temaService.buscarPorTexto(texto);
     }
 
     @GetMapping("/usuario/{idUsuario}")
-    public List<Tema> porUsuario(@PathVariable Long idUsuario) {
+    public List<TemaDTO> porUsuario(@PathVariable Long idUsuario) {
         return temaService.buscarPorUsuario(idUsuario);
     }
 
     @GetMapping("/populares")
-    public List<Tema> populares() {
+    public List<TemaDTO> populares() {
         return temaService.populares();
     }
 
     @GetMapping("/baneados")
-    public List<Tema> baneados() {
+    public List<TemaDTO> baneados() {
         return temaService.listarBaneados();
     }
 
     @PostMapping
-    public ResponseEntity<Tema> publicar(@Valid @RequestBody TemaRequest datos) {
+    public ResponseEntity<TemaDTO> publicar(@Valid @RequestBody TemaRequest datos) {
         return ResponseEntity.status(HttpStatus.CREATED).body(temaService.publicar(datos));
     }
 
     @PutMapping("/{id}")
-    public Tema actualizar(@PathVariable Long id, @Valid @RequestBody TemaRequest datos) {
+    public TemaDTO actualizar(@PathVariable Long id, @Valid @RequestBody TemaRequest datos) {
         return temaService.actualizar(id, datos);
     }
 
@@ -88,17 +88,17 @@ public class TemaController {
 
     // Lo usa ms-moderacion para banear o restaurar
     @PatchMapping("/{id}/estado")
-    public Tema cambiarEstado(@PathVariable Long id, @Valid @RequestBody EstadoRequest datos) {
+    public TemaDTO cambiarEstado(@PathVariable Long id, @Valid @RequestBody EstadoRequest datos) {
         return temaService.cambiarEstado(id, datos.estado());
     }
 
     @GetMapping("/{id}/comentarios")
-    public List<Comentario> comentarios(@PathVariable Long id) {
+    public List<ComentarioDTO> comentarios(@PathVariable Long id) {
         return comentarioService.listarPorTema(id);
     }
 
     @PostMapping("/{id}/comentarios")
-    public ResponseEntity<Comentario> comentar(@PathVariable Long id, @Valid @RequestBody ComentarioRequest datos) {
+    public ResponseEntity<ComentarioDTO> comentar(@PathVariable Long id, @Valid @RequestBody ComentarioRequest datos) {
         return ResponseEntity.status(HttpStatus.CREATED).body(comentarioService.comentar(id, datos));
     }
 }

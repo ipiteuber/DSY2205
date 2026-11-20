@@ -2,112 +2,32 @@ package com.duoc.usuarios.service;
 
 import com.duoc.usuarios.dto.LoginRequest;
 import com.duoc.usuarios.dto.LoginResponse;
+import com.duoc.usuarios.dto.UsuarioDTO;
 import com.duoc.usuarios.dto.UsuarioRequest;
 import com.duoc.usuarios.dto.UsuariosPorRol;
-import com.duoc.usuarios.exception.AccesoDenegadoException;
-import com.duoc.usuarios.exception.ConflictoException;
-import com.duoc.usuarios.exception.CredencialesInvalidasException;
-import com.duoc.usuarios.exception.RecursoNoEncontradoException;
-import com.duoc.usuarios.exception.ReglaNegocioException;
-import com.duoc.usuarios.model.Usuario;
-import com.duoc.usuarios.repository.UsuarioRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-// Servicio de usuarios, maneja el CRUD, los filtros y el login con BCrypt
-@Service
-@RequiredArgsConstructor
-public class UsuarioService {
+// Contrato del servicio de usuarios
+public interface UsuarioService {
 
-    private final UsuarioRepository usuarioRepository;
-    private final RolService rolService;
-    private final PasswordEncoder passwordEncoder;
+    List<UsuarioDTO> listar();
 
-    public List<Usuario> listar() {
-        return usuarioRepository.findAll();
-    }
+    UsuarioDTO buscarPorId(Long id);
 
-    public Usuario buscarPorId(Long id) {
-        return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No existe un usuario con ID " + id));
-    }
+    List<UsuarioDTO> buscarPorRol(String nombreRol);
 
-    public List<Usuario> buscarPorRol(String nombreRol) {
-        return usuarioRepository.findByRol_NombreIgnoreCase(nombreRol);
-    }
+    List<UsuarioDTO> buscarPorEstado(Boolean activo);
 
-    public List<Usuario> buscarPorEstado(Boolean activo) {
-        return usuarioRepository.findByActivo(activo);
-    }
+    List<UsuarioDTO> buscarPorTexto(String texto);
 
-    public List<Usuario> buscarPorTexto(String texto) {
-        return usuarioRepository.buscarPorTexto(texto);
-    }
+    List<UsuariosPorRol> resumenPorRol();
 
-    public List<UsuariosPorRol> resumenPorRol() {
-        return usuarioRepository.contarPorRol();
-    }
+    UsuarioDTO crear(UsuarioRequest datos);
 
-    public Usuario crear(UsuarioRequest datos) {
-        if (datos.password() == null || datos.password().isBlank()) {
-            throw new ReglaNegocioException("La contraseña es obligatoria al crear un usuario");
-        }
-        if (usuarioRepository.existsByNombreUsuarioIgnoreCase(datos.nombreUsuario())) {
-            throw new ConflictoException("El nombre de usuario " + datos.nombreUsuario() + " ya está en uso");
-        }
-        if (usuarioRepository.existsByEmailIgnoreCase(datos.email())) {
-            throw new ConflictoException("El email " + datos.email() + " ya está registrado");
-        }
-        Usuario usuario = new Usuario();
-        copiarDatos(usuario, datos);
-        return usuarioRepository.save(usuario);
-    }
+    UsuarioDTO actualizar(Long id, UsuarioRequest datos);
 
-    public Usuario actualizar(Long id, UsuarioRequest datos) {
-        Usuario usuario = buscarPorId(id);
-        if (!usuario.getNombreUsuario().equalsIgnoreCase(datos.nombreUsuario())
-                && usuarioRepository.existsByNombreUsuarioIgnoreCase(datos.nombreUsuario())) {
-            throw new ConflictoException("El nombre de usuario " + datos.nombreUsuario() + " ya está en uso");
-        }
-        if (!usuario.getEmail().equalsIgnoreCase(datos.email())
-                && usuarioRepository.existsByEmailIgnoreCase(datos.email())) {
-            throw new ConflictoException("El email " + datos.email() + " ya está registrado");
-        }
-        copiarDatos(usuario, datos);
-        return usuarioRepository.save(usuario);
-    }
+    void eliminar(Long id);
 
-    public void eliminar(Long id) {
-        usuarioRepository.delete(buscarPorId(id));
-    }
-
-    public LoginResponse login(LoginRequest datos) {
-        Usuario usuario = usuarioRepository
-                .findByNombreUsuarioIgnoreCaseOrEmailIgnoreCase(datos.usuario(), datos.usuario())
-                .orElseThrow(() -> new CredencialesInvalidasException("Usuario o contraseña incorrectos"));
-        if (!passwordEncoder.matches(datos.password(), usuario.getPasswordHash())) {
-            throw new CredencialesInvalidasException("Usuario o contraseña incorrectos");
-        }
-        if (!usuario.getActivo()) {
-            throw new AccesoDenegadoException("La cuenta de " + usuario.getNombreUsuario() + " está desactivada");
-        }
-        return new LoginResponse(usuario.getId(), usuario.getNombreUsuario(), usuario.getNombreCompleto(),
-                usuario.getRol().getNombre(), "Inicio de sesión exitoso. Bienvenido/a, " + usuario.getNombreCompleto());
-    }
-
-    private void copiarDatos(Usuario usuario, UsuarioRequest datos) {
-        usuario.setNombreUsuario(datos.nombreUsuario());
-        usuario.setEmail(datos.email());
-        usuario.setNombreCompleto(datos.nombreCompleto());
-        usuario.setRol(rolService.buscarPorId(datos.idRol()));
-        if (datos.activo() != null) {
-            usuario.setActivo(datos.activo());
-        }
-        if (datos.password() != null && !datos.password().isBlank()) {
-            usuario.setPasswordHash(passwordEncoder.encode(datos.password()));
-        }
-    }
+    LoginResponse login(LoginRequest datos);
 }

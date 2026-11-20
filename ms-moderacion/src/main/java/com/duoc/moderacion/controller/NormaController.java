@@ -1,6 +1,6 @@
 package com.duoc.moderacion.controller;
 
-import com.duoc.moderacion.model.Norma;
+import com.duoc.moderacion.dto.NormaDTO;
 import com.duoc.moderacion.service.NormaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,22 +27,22 @@ public class NormaController {
     private final NormaService normaService;
 
     @GetMapping
-    public List<Norma> listar() {
+    public List<NormaDTO> listar() {
         return normaService.listar();
     }
 
     @GetMapping("/{id}")
-    public Norma obtener(@PathVariable Long id) {
+    public NormaDTO obtener(@PathVariable Long id) {
         return normaService.buscarPorId(id);
     }
 
     @PostMapping
-    public ResponseEntity<Norma> crear(@Valid @RequestBody Norma norma) {
+    public ResponseEntity<NormaDTO> crear(@Valid @RequestBody NormaDTO norma) {
         return ResponseEntity.status(HttpStatus.CREATED).body(normaService.crear(norma));
     }
 
     @PutMapping("/{id}")
-    public Norma actualizar(@PathVariable Long id, @Valid @RequestBody Norma norma) {
+    public NormaDTO actualizar(@PathVariable Long id, @Valid @RequestBody NormaDTO norma) {
         return normaService.actualizar(id, norma);
     }
 
